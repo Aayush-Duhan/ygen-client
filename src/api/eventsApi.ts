@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { EventType } from '../types/event';
 
-const API_URL = 'https://ygen-server-production.up.railway.app/api';
+const API_URL = 'https://ygen-server.onrender.com/api';
 
 export type { EventType };
 
