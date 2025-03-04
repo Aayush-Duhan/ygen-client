@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const MicroGroups: React.FC = () => {
   const microGroups = [
@@ -70,8 +70,6 @@ const MicroGroups: React.FC = () => {
             <div 
               key={group.id} 
               className="bg-black p-8 rounded-xl border border-gray-800 hover:border-red-500 transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden group"
-              onMouseEnter={() => setHoveredGroup(group.id)}
-              onMouseLeave={() => setHoveredGroup(null)}
             >
               {/* Animated background gradient on hover */}
               <div className={`absolute inset-0 bg-gradient-to-br from-red-900/20 via-red-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}></div>
