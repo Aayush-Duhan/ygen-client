@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 const MicroGroups: React.FC = () => {
-  const [hoveredGroup, setHoveredGroup] = useState<number | null>(null);
-
   const microGroups = [
     {
       id: 1,
