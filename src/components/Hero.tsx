@@ -6,6 +6,14 @@ const Hero: React.FC = () => {
   const [typedText, setTypedText] = useState('');
   const fullText = "The next generation of innovators, creators, and leaders at our college";
   
+  const particlesInit = useCallback(async (engine: Engine) => {
+    await loadSlim(engine);
+  }, []);
+  
+  const particlesLoaded = useCallback(async (container: Container | undefined) => {
+    await console.log(container);
+  }, []);
+  
   useEffect(() => {
     let currentIndex = 0;
     const typingInterval = setInterval(() => {
@@ -16,6 +24,7 @@ const Hero: React.FC = () => {
         clearInterval(typingInterval);
       }
     }, 50);
+    
     return () => clearInterval(typingInterval);
   }, []);
   
