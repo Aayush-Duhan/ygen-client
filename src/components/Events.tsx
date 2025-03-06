@@ -241,7 +241,7 @@ const EventSection: React.FC<EventSectionProps> = ({ category, title, subtitle }
           </button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
           {loading ? (
             <div className="col-span-2 text-center py-20">
               <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-red-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
@@ -261,10 +261,10 @@ const EventSection: React.FC<EventSectionProps> = ({ category, title, subtitle }
             events.map((event) => (
               <div 
                 key={`${event._id}-${event.name}`}
-                className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group"
+                className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group flex flex-col md:flex-row"
                 onClick={() => openModal(event)}
               >
-                <div className="h-48 overflow-hidden relative">
+                <div className="h-48 md:h-auto md:w-1/3 overflow-hidden relative">
                   <img 
                     src={event.image} 
                     alt={event.name} 
@@ -272,14 +272,16 @@ const EventSection: React.FC<EventSectionProps> = ({ category, title, subtitle }
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-300"></div>
                 </div>
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-bold group-hover:text-red-400 transition-colors duration-300">{event.name}</h3>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${event.type === 'online' ? 'bg-red-900 text-red-300' : 'bg-red-900 text-red-300'}`}>
-                      {event.type === 'online' ? 'Online' : 'Offline'}
-                    </span>
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className="text-2xl font-bold group-hover:text-red-400 transition-colors duration-300">{event.name}</h3>
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${event.type === 'online' ? 'bg-red-900 text-red-300' : 'bg-red-900 text-red-300'}`}>
+                        {event.type === 'online' ? 'Online' : 'Offline'}
+                      </span>
+                    </div>
+                    <p className="text-gray-400 mb-4 group-hover:text-gray-300 transition-colors duration-300">{event.description}</p>
                   </div>
-                  <p className="text-gray-400 mb-4 group-hover:text-gray-300 transition-colors duration-300">{event.description}</p>
                   <div className="flex flex-col space-y-2 text-sm text-gray-400">
                     <div key={`date-${event._id}`} className="flex items-center">
                       <svg className="w-4 h-4 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -291,7 +293,7 @@ const EventSection: React.FC<EventSectionProps> = ({ category, title, subtitle }
                       <svg className="w-4 h-4 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                       </svg>
-                      <span>{formatTimeRange(event.time)}</span>
+                      <span>{event.time}</span>
                     </div>
                     <div key={`location-${event._id}`} className="flex items-center">
                       <svg className="w-4 h-4 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -301,15 +303,6 @@ const EventSection: React.FC<EventSectionProps> = ({ category, title, subtitle }
                       <span>{event.location}</span>
                     </div>
                   </div>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open('https://vitchennaievents.com/conf1/', '_blank');
-                    }} 
-                    className="mt-6 w-full py-2 bg-gradient-to-r from-red-600 to-red-700 rounded-full text-white font-medium hover:opacity-90 transition-opacity"
-                  >
-                    Register Now
-                  </button>
                 </div>
               </div>
             ))
@@ -465,104 +458,77 @@ const EventSection: React.FC<EventSectionProps> = ({ category, title, subtitle }
       )}
 
       {/* Existing Event Modal */}
-      {selectedEvent && isModalOpen && (
-        <div 
-          className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-75 backdrop-blur-sm"
-          aria-labelledby="event-modal-title" 
-          role="dialog" 
-          aria-modal="true"
-          onClick={closeModal}
-        >
-          <div className="flex items-center justify-center min-h-screen p-4">
-            <div 
-              className="bg-gray-900 rounded-xl max-w-2xl w-full overflow-hidden shadow-xl transform transition-all"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-2xl font-bold text-white">{selectedEvent.name}</h3>
-                  <button 
-                    className="bg-gray-800 rounded-full p-2 hover:bg-gray-700 transition-all"
-                    onClick={closeModal}
-                  >
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                  </button>
+      {isModalOpen && selectedEvent && (
+        <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 bg-black/75 transition-opacity" aria-hidden="true" onClick={closeModal}></div>
+            <div className="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+              <div className="absolute top-0 right-0 pt-4 pr-4">
+                <button
+                  type="button"
+                  className="text-gray-400 hover:text-white focus:outline-none"
+                  onClick={closeModal}
+                >
+                  <span className="sr-only">Close</span>
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="flex flex-col md:flex-row">
+                <div className="md:w-1/2">
+                  <img src={selectedEvent.image} alt={selectedEvent.name} className="w-full h-full object-cover" />
                 </div>
-                
-                <div className="space-y-6">
-                  <div className="md:w-1/2 relative">
-                    <img 
-                      src={selectedEvent.image} 
-                      alt={selectedEvent.name} 
-                      className="w-full h-full object-cover"
-                    />
-                    <button 
-                      className="absolute top-4 right-4 bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-all"
-                      onClick={closeModal}
-                    >
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                <div className="p-6 md:w-1/2">
+                  <h3 className="text-2xl font-bold text-white mb-4">{selectedEvent.name}</h3>
+                  <p className="text-gray-400 mb-6">{selectedEvent.description}</p>
+                  {timeLeft && (
+                    <div className="grid grid-cols-4 gap-4 mb-6">
+                      <div className="text-center p-3 bg-gray-800 rounded-lg">
+                        <span className="block text-2xl font-bold text-red-500">{timeLeft.days}</span>
+                        <span className="text-sm text-gray-400">Days</span>
+                      </div>
+                      <div className="text-center p-3 bg-gray-800 rounded-lg">
+                        <span className="block text-2xl font-bold text-red-500">{timeLeft.hours}</span>
+                        <span className="text-sm text-gray-400">Hours</span>
+                      </div>
+                      <div className="text-center p-3 bg-gray-800 rounded-lg">
+                        <span className="block text-2xl font-bold text-red-500">{timeLeft.minutes}</span>
+                        <span className="text-sm text-gray-400">Minutes</span>
+                      </div>
+                      <div className="text-center p-3 bg-gray-800 rounded-lg">
+                        <span className="block text-2xl font-bold text-red-500">{timeLeft.seconds}</span>
+                        <span className="text-sm text-gray-400">Seconds</span>
+                      </div>
+                    </div>
+                  )}
+                  <div className="space-y-4">
+                    <div className="flex items-center text-gray-400">
+                      <svg className="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
-                    </button>
-                  </div>
-                  <div className="md:w-1/2 p-8 overflow-y-auto">
-                    <div className="flex justify-between items-start mb-6">
-                      <h3 className="text-3xl font-bold text-white">{selectedEvent.name}</h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${selectedEvent.type === 'online' ? 'bg-red-900 text-red-300' : 'bg-red-900 text-red-300'}`}>
-                        {selectedEvent.type === 'online' ? 'Online' : 'Offline'}
-                      </span>
+                      <span>{formatDateRange(selectedEvent)}</span>
                     </div>
-                    {timeLeft && (
-                      <div className="grid grid-cols-4 gap-4 mb-6 bg-gray-800 p-4 rounded-lg">
-                        <div className="text-center">
-                          <div className="text-2xl font-bold text-red-400">{timeLeft.days}</div>
-                          <div className="text-sm text-gray-400">Days</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl font-bold text-red-400">{timeLeft.hours}</div>
-                          <div className="text-sm text-gray-400">Hours</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl font-bold text-red-400">{timeLeft.minutes}</div>
-                          <div className="text-sm text-gray-400">Minutes</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl font-bold text-red-400">{timeLeft.seconds}</div>
-                          <div className="text-sm text-gray-400">Seconds</div>
-                        </div>
-                      </div>
-                    )}
-                    <p className="text-gray-300 text-lg mb-6">{selectedEvent.description}</p>
-                    <div className="grid grid-cols-1 gap-4 text-gray-300">
-                      <div key={`modal-date-${selectedEvent._id}`} className="flex items-center">
-                        <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        <span>{formatDateRange(selectedEvent)}</span>
-                      </div>
-                      <div key={`modal-time-${selectedEvent._id}`} className="flex items-center">
-                        <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>{formatTimeRange(selectedEvent.time)}</span>
-                      </div>
-                      <div key={`modal-location-${selectedEvent._id}`} className="flex items-center">
-                        <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <span>{selectedEvent.location}</span>
-                      </div>
+                    <div className="flex items-center text-gray-400">
+                      <svg className="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>{formatTimeRange(selectedEvent.time)}</span>
                     </div>
-                    <button 
-                      onClick={() => window.open('https://vitchennaievents.com/conf1/', '_blank')} 
-                      className="mt-6 w-full py-3 bg-gradient-to-r from-red-600 to-red-700 rounded-full text-white font-medium hover:opacity-90 transition-opacity"
-                    >
-                      Register Now
-                    </button>
+                    <div className="flex items-center text-gray-400">
+                      <svg className="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <span>{selectedEvent.location}</span>
+                    </div>
                   </div>
+                  <button 
+                    onClick={() => window.open('https://vitchennaievents.com/conf1/', '_blank')} 
+                    className="mt-6 w-full py-3 bg-gradient-to-r from-red-600 to-red-700 rounded-full text-white font-medium hover:opacity-90 transition-opacity"
+                  >
+                    Register Now
+                  </button>
                 </div>
               </div>
             </div>
