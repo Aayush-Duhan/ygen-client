@@ -241,7 +241,7 @@ const EventSection: React.FC<EventSectionProps> = ({ category, title, subtitle }
           </button>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {loading ? (
             <div className="col-span-2 text-center py-20">
               <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-red-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
@@ -261,10 +261,10 @@ const EventSection: React.FC<EventSectionProps> = ({ category, title, subtitle }
             events.map((event) => (
               <div 
                 key={`${event._id}-${event.name}`}
-                className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group flex flex-col md:flex-row"
+                className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group flex flex-col"
                 onClick={() => openModal(event)}
               >
-                <div className="h-48 md:h-auto md:w-1/3 overflow-hidden relative">
+                <div className="h-48 overflow-hidden relative">
                   <img 
                     src={event.image} 
                     alt={event.name} 
