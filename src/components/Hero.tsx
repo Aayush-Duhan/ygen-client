@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState, useCallback } from 'react';
+import type { Container, Engine } from "tsparticles-engine";
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
 const Hero: React.FC = () => {
   const [typedText, setTypedText] = useState('');
   const fullText = "The next generation of innovators, creators, and leaders at our college";
@@ -14,12 +16,81 @@ const Hero: React.FC = () => {
         clearInterval(typingInterval);
       }
     }, 50);
-    
+    const particlesInit = useCallback(async (engine: Engine) => {
+      console.log(engine);
+      await loadSlim(engine);
+    }, []);
+    const particlesLoaded = useCallback(async (container: Container | undefined) => {
+      await console.log(container);
+    }, []);
     return () => clearInterval(typingInterval);
   }, []);
   
   return (
     <section id="hero" className="bg-black text-white py-24 px-4 relative overflow-hidden min-h-[90vh] flex items-center">
+      {/* Particle animation */}
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        loaded={particlesLoaded}
+        options={{
+          background: {
+            color: {
+              value: "#000", 
+            },
+          },
+          fpsLimit: 120,
+          particles: {
+            number: {
+              value: 200, 
+              density: {
+                enable: true,
+                area: 1000,
+              },
+            },
+            color: {
+              value: "#ffffff", 
+            },
+            shape: {
+              type: "circle", 
+            },
+            opacity: {
+              value: { min: 0.3, max: 1 }, 
+              random: true,
+              animation: {
+                enable: true,
+                speed: 1,
+                minimumValue: 0.3,
+                sync: false,
+              },
+            },
+            size: {
+              value: { min: 0.2, max: 1.6 }, 
+              random: true,
+              animation: {
+                enable: true,
+                speed: 2,
+                minimumValue: 0.5,
+                sync: false,
+              },
+            },
+            move: {
+              enable: true,
+              speed: 0.2, 
+              direction: "none", 
+              random: true, 
+              straight: false, 
+              outModes: {
+                default: "out", 
+              },
+            },
+            links: {
+              enable: false,
+            },
+          },
+          detectRetina: true,
+        }}
+      />
       {/* Background gradient effect with enhanced opacity */}
       <div className="absolute inset-0 bg-gradient-to-b from-red-900/20 to-transparent opacity-40"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-red-900/10 via-transparent to-red-900/10 opacity-30"></div>
